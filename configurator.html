@@ -96,19 +96,27 @@
     const frameColorCircle = document.getElementById('frameColorCircle');
     const bladesColorCircle = document.getElementById('bladesColorCircle');
 
+    // Function to capitalize first letter
+    function capitalizeFirstLetter(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Function to update the displayed image
     function updateImage() {
-      const frameColor = frameColorSelect.value;
-      const bladesColor = bladesColorSelect.value;
+      const frameColor = capitalizeFirstLetter(frameColorSelect.value);
+      const bladesColor = capitalizeFirstLetter(bladesColorSelect.value);
       const imageName = `F_${frameColor}_B_${bladesColor}.jpg`;
       productImage.src = imageName;
     }
 
+    // Function to update the colour indicator circles
     function updateColorCircle(selectElement, circleElement) {
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       const color = selectedOption.getAttribute('data-color');
       circleElement.style.backgroundColor = color;
     }
 
+    // Event listeners for dropdowns
     frameColorSelect.addEventListener('change', function() {
       updateImage();
       updateColorCircle(frameColorSelect, frameColorCircle);
