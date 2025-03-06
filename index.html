@@ -32,13 +32,16 @@
       align-items: center;
       gap: 20px;
       margin: 10px 0;
-      flex-wrap: wrap;
+      flex-wrap: nowrap; /* Prevents wrapping on mobile */
+      overflow-x: auto;  /* Adds horizontal scroll if needed */
+      padding: 10px;     /* Adds space for scroll */
     }
 
     .color-option {
       text-align: center;
       cursor: pointer;
       transition: transform 0.3s;
+      min-width: 80px;   /* Ensures consistent spacing on mobile */
     }
 
     .color-option:hover {
@@ -84,17 +87,6 @@
 
       .color-name {
         font-size: 12px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .color-selection {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      img {
-        max-width: 90%;
       }
     }
   </style>
