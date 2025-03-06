@@ -30,7 +30,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px; /* Reduced gap for tighter spacing */
+      gap: 10px;
       margin: 10px 0;
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -40,9 +40,10 @@
     .color-option {
       text-align: center;
       cursor: pointer;
-      transition: transform 0.3s;
-      min-width: 60px; /* Reduced width for compact spacing */
-      flex-shrink: 0;   /* Prevents shrinking on mobile */
+      transition: transform 0.3s, border 0.3s;
+      min-width: 60px;
+      flex-shrink: 0;
+      position: relative;
     }
 
     .color-option:hover {
@@ -50,16 +51,42 @@
     }
 
     .color-circle {
-      width: 40px;  /* Reduced size for better fit */
+      width: 40px;
       height: 40px;
       border-radius: 50%;
       display: inline-block;
-      border: 2px solid #333;
+      border: 2px solid transparent;
       margin-bottom: 5px;
+      transition: box-shadow 0.3s, transform 0.3s;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .selected {
-      border: 3px solid #333;
+    .color-circle::after {
+      content: '✓';
+      color: #fff; /* Default white checkmark */
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s, color 0.3s;
+    }
+
+    /* Dark grey checkmark on WHITE colour circle */
+    .color-option[data-color="White"] .color-circle::after {
+      color: #333; /* Dark grey checkmark on white circle */
+    }
+
+    .selected .color-circle {
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      border: 2px solid #333;
+      transform: scale(1.1);
+    }
+
+    .selected .color-circle::after {
+      opacity: 1;
     }
 
     .color-name {
@@ -82,7 +109,7 @@
       }
 
       .color-circle {
-        width: 35px;  /* Slightly smaller on mobile */
+        width: 35px;
         height: 35px;
       }
 
