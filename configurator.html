@@ -10,24 +10,20 @@
       text-align: center;
       margin: 20px;
     }
-
     h1 {
       margin-bottom: 20px;
     }
-
     .configurator {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 20px;
     }
-
     .color-picker {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .color-circle {
       width: 20px;
       height: 20px;
@@ -35,14 +31,12 @@
       display: inline-block;
       border: 1px solid #000;
     }
-
     select {
       padding: 10px;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-
     img {
       max-width: 100%;
       height: auto;
@@ -57,7 +51,6 @@
   <h1>Frame and Blades Configurator</h1>
 
   <div class="configurator">
-    <!-- Frame Color Picker -->
     <div class="color-picker">
       <span class="color-circle" style="background-color: #444;" id="frameColorCircle"></span>
       <label for="frameColor">Frame Color:</label>
@@ -70,7 +63,6 @@
       </select>
     </div>
 
-    <!-- Blades Color Picker -->
     <div class="color-picker">
       <span class="color-circle" style="background-color: #444;" id="bladesColorCircle"></span>
       <label for="bladesColor">Blades Color:</label>
@@ -84,9 +76,8 @@
     </div>
   </div>
 
-  <!-- Image Display -->
   <div>
-    <img id="productImage" src="F_Monument_B_Monument.jpg" alt="Product Image">
+    <img id="productImage" src="" alt="Product Image">
   </div>
 
   <script>
@@ -96,27 +87,28 @@
     const frameColorCircle = document.getElementById('frameColorCircle');
     const bladesColorCircle = document.getElementById('bladesColorCircle');
 
-    // Function to capitalize first letter
     function capitalizeFirstLetter(str) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    // Function to update the displayed image
     function updateImage() {
       const frameColor = capitalizeFirstLetter(frameColorSelect.value);
       const bladesColor = capitalizeFirstLetter(bladesColorSelect.value);
-      const imageName = `F_${frameColor}_B_${bladesColor}.jpg`;
-      productImage.src = imageName;
+      
+      // GitHub raw URL base
+      const baseURL = "https://raw.githubusercontent.com/bozzza/frame-blades-configurator/refs/heads/main";
+      
+      // Construct full URL for the image
+      const imagePath = `${baseURL}/F_${frameColor}_B_${bladesColor}.jpg`;
+      productImage.src = imagePath;
     }
 
-    // Function to update the colour indicator circles
     function updateColorCircle(selectElement, circleElement) {
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       const color = selectedOption.getAttribute('data-color');
       circleElement.style.backgroundColor = color;
     }
 
-    // Event listeners for dropdowns
     frameColorSelect.addEventListener('change', function() {
       updateImage();
       updateColorCircle(frameColorSelect, frameColorCircle);
@@ -126,6 +118,9 @@
       updateImage();
       updateColorCircle(bladesColorSelect, bladesColorCircle);
     });
+
+    // Load default image
+    updateImage();
   </script>
 </body>
 </html>
