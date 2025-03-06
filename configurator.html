@@ -15,10 +15,30 @@
       margin-bottom: 20px;
     }
 
+    .configurator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .color-picker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid #000;
+    }
+
     select {
       padding: 10px;
       font-size: 16px;
-      margin: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
@@ -36,25 +56,33 @@
 <body>
   <h1>Frame and Blades Configurator</h1>
 
-  <!-- Dropdown for Frame Color -->
-  <label for="frameColor">Frame Color:</label>
-  <select id="frameColor">
-    <option value="Monument">Monument</option>
-    <option value="White">White</option>
-    <option value="Dune">Dune</option>
-    <option value="Silver">Silver</option>
-    <option value="Surfmist">Surfmist</option>
-  </select>
+  <div class="configurator">
+    <!-- Frame Color Picker -->
+    <div class="color-picker">
+      <span class="color-circle" style="background-color: #444;" id="frameColorCircle"></span>
+      <label for="frameColor">Frame Color:</label>
+      <select id="frameColor">
+        <option value="Monument" data-color="#444">Monument</option>
+        <option value="White" data-color="#FFF">White</option>
+        <option value="Dune" data-color="#A89F91">Dune</option>
+        <option value="Silver" data-color="#C0C0C0">Silver</option>
+        <option value="Surfmist" data-color="#ECEFE6">Surfmist</option>
+      </select>
+    </div>
 
-  <!-- Dropdown for Blades Color -->
-  <label for="bladesColor">Blades Color:</label>
-  <select id="bladesColor">
-    <option value="Monument">Monument</option>
-    <option value="White">White</option>
-    <option value="Dune">Dune</option>
-    <option value="Silver">Silver</option>
-    <option value="Surfmist">Surfmist</option>
-  </select>
+    <!-- Blades Color Picker -->
+    <div class="color-picker">
+      <span class="color-circle" style="background-color: #444;" id="bladesColorCircle"></span>
+      <label for="bladesColor">Blades Color:</label>
+      <select id="bladesColor">
+        <option value="Monument" data-color="#444">Monument</option>
+        <option value="White" data-color="#FFF">White</option>
+        <option value="Dune" data-color="#A89F91">Dune</option>
+        <option value="Silver" data-color="#C0C0C0">Silver</option>
+        <option value="Surfmist" data-color="#ECEFE6">Surfmist</option>
+      </select>
+    </div>
+  </div>
 
   <!-- Image Display -->
   <div>
@@ -62,27 +90,34 @@
   </div>
 
   <script>
-    // Get references to the dropdowns and image element
     const frameColorSelect = document.getElementById('frameColor');
     const bladesColorSelect = document.getElementById('bladesColor');
     const productImage = document.getElementById('productImage');
+    const frameColorCircle = document.getElementById('frameColorCircle');
+    const bladesColorCircle = document.getElementById('bladesColorCircle');
 
-    // Function to update the image
     function updateImage() {
-      // Get the selected values from the dropdowns
       const frameColor = frameColorSelect.value;
       const bladesColor = bladesColorSelect.value;
-
-      // Construct the image filename based on the selected colors
       const imageName = `F_${frameColor}_B_${bladesColor}.jpg`;
-
-      // Update the image source
       productImage.src = imageName;
     }
 
-    // Add event listeners to the dropdowns
-    frameColorSelect.addEventListener('change', updateImage);
-    bladesColorSelect.addEventListener('change', updateImage);
+    function updateColorCircle(selectElement, circleElement) {
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      const color = selectedOption.getAttribute('data-color');
+      circleElement.style.backgroundColor = color;
+    }
+
+    frameColorSelect.addEventListener('change', function() {
+      updateImage();
+      updateColorCircle(frameColorSelect, frameColorCircle);
+    });
+
+    bladesColorSelect.addEventListener('change', function() {
+      updateImage();
+      updateColorCircle(bladesColorSelect, bladesColorCircle);
+    });
   </script>
 </body>
 </html>
