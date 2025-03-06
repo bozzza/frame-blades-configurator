@@ -30,18 +30,19 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px;
+      gap: 10px; /* Reduced gap for tighter spacing */
       margin: 10px 0;
-      flex-wrap: nowrap; /* Prevents wrapping on mobile */
-      overflow-x: auto;  /* Adds horizontal scroll if needed */
-      padding: 10px;     /* Adds space for scroll */
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 5px;
     }
 
     .color-option {
       text-align: center;
       cursor: pointer;
       transition: transform 0.3s;
-      min-width: 80px;   /* Ensures consistent spacing on mobile */
+      min-width: 60px; /* Reduced width for compact spacing */
+      flex-shrink: 0;   /* Prevents shrinking on mobile */
     }
 
     .color-option:hover {
@@ -49,11 +50,11 @@
     }
 
     .color-circle {
-      width: 50px;
-      height: 50px;
+      width: 40px;  /* Reduced size for better fit */
+      height: 40px;
       border-radius: 50%;
       display: inline-block;
-      border: 2px solid #333; /* Consistent border for all colours */
+      border: 2px solid #333;
       margin-bottom: 5px;
     }
 
@@ -62,7 +63,7 @@
     }
 
     .color-name {
-      font-size: 14px;
+      font-size: 12px;
       color: #333;
     }
 
@@ -81,12 +82,12 @@
       }
 
       .color-circle {
-        width: 40px;
-        height: 40px;
+        width: 35px;  /* Slightly smaller on mobile */
+        height: 35px;
       }
 
       .color-name {
-        font-size: 12px;
+        font-size: 11px;
       }
     }
   </style>
@@ -158,33 +159,4 @@
 
     function updateImage() {
       const baseURL = "https://raw.githubusercontent.com/bozzza/frame-blades-configurator/refs/heads/main";
-      const imagePath = `${baseURL}/F_${selectedFrameColor}_B_${selectedBladesColor}.jpg`;
-      productImage.src = imagePath;
-    }
-
-    function handleColorClick(event, type) {
-      const selectedColor = event.currentTarget.getAttribute('data-color');
-      document.querySelectorAll(`.${type}-option`).forEach(option => option.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
-
-      if (type === 'frame') selectedFrameColor = selectedColor;
-      if (type === 'blades') selectedBladesColor = selectedColor;
-
-      updateImage();
-    }
-
-    document.querySelectorAll('#frameColors .color-option').forEach(option => {
-      option.classList.add('frame-option');
-      option.addEventListener('click', (event) => handleColorClick(event, 'frame'));
-    });
-
-    document.querySelectorAll('#bladesColors .color-option').forEach(option => {
-      option.classList.add('blades-option');
-      option.addEventListener('click', (event) => handleColorClick(event, 'blades'));
-    });
-
-    updateImage();
-  </script>
-</body>
-
-</html>
+      const imagePath = `${baseURL}/F_${selectedFrameColor}_B_${selectedBladesColor}.jpg`
