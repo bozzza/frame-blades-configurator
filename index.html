@@ -159,4 +159,33 @@
 
     function updateImage() {
       const baseURL = "https://raw.githubusercontent.com/bozzza/frame-blades-configurator/refs/heads/main";
-      const imagePath = `${baseURL}/F_${selectedFrameColor}_B_${selectedBladesColor}.jpg`
+      const imagePath = `${baseURL}/F_${selectedFrameColor}_B_${selectedBladesColor}.jpg`;
+      productImage.src = imagePath;
+    }
+
+    function handleColorClick(event, type) {
+      const selectedColor = event.currentTarget.getAttribute('data-color');
+      document.querySelectorAll(`.${type}-option`).forEach(option => option.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      if (type === 'frame') selectedFrameColor = selectedColor;
+      if (type === 'blades') selectedBladesColor = selectedColor;
+
+      updateImage();
+    }
+
+    document.querySelectorAll('#frameColors .color-option').forEach(option => {
+      option.classList.add('frame-option');
+      option.addEventListener('click', (event) => handleColorClick(event, 'frame'));
+    });
+
+    document.querySelectorAll('#bladesColors .color-option').forEach(option => {
+      option.classList.add('blades-option');
+      option.addEventListener('click', (event) => handleColorClick(event, 'blades'));
+    });
+
+    updateImage();
+  </script>
+</body>
+
+</html>
