@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frame and Blades Configurator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Frame and Blades Configurator</h1>
+
+  <!-- Dropdown for Frame Color -->
+  <label for="frameColor">Frame Color:</label>
+  <select id="frameColor">
+    <option value="Monument">Monument</option>
+    <option value="White">White</option>
+    <option value="Dune">Dune</option>
+    <option value="Silver">Silver</option>
+    <option value="Surfmist">Surfmist</option>
+  </select>
+
+  <!-- Dropdown for Blades Color -->
+  <label for="bladesColor">Blades Color:</label>
+  <select id="bladesColor">
+    <option value="Monument">Monument</option>
+    <option value="White">White</option>
+    <option value="Dune">Dune</option>
+    <option value="Silver">Silver</option>
+    <option value="Surfmist">Surfmist</option>
+  </select>
+
+  <!-- Image Display -->
+  <div>
+    <img id="productImage" src="F_Monument_B_Monument.jpg" alt="Product Image">
+  </div>
+
+  <script>
+    // Get references to the dropdowns and image element
+    const frameColorSelect = document.getElementById('frameColor');
+    const bladesColorSelect = document.getElementById('bladesColor');
+    const productImage = document.getElementById('productImage');
+
+    // Function to update the image
+    function updateImage() {
+      // Get the selected values from the dropdowns
+      const frameColor = frameColorSelect.value;
+      const bladesColor = bladesColorSelect.value;
+
+      // Construct the image filename based on the selected colors
+      const imageName = `F_${frameColor}_B_${bladesColor}.jpg`;
+
+      // Update the image source
+      productImage.src = imageName;
+    }
+
+    // Add event listeners to the dropdowns
+    frameColorSelect.addEventListener('change', updateImage);
+    bladesColorSelect.addEventListener('change', updateImage);
+  </script>
+</body>
+</html>
