@@ -31,10 +31,10 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
-      margin: 10px 0;
+      margin: 20px 0; /* Increased margin to prevent overlap */
       flex-wrap: nowrap;
       overflow-x: auto;
-      padding: 5px;
+      padding: 10px;
     }
 
     .color-option {
@@ -62,31 +62,10 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .color-circle::after {
-      content: '✓';
-      color: #fff; /* Default white checkmark */
-      font-size: 20px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      transition: opacity 0.3s, color 0.3s;
-    }
-
-    /* Dark grey checkmark on WHITE colour circle */
-    .color-option[data-color="White"] .color-circle::after {
-      color: #333; /* Dark grey checkmark on white circle */
-    }
-
     .selected .color-circle {
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
       border: 2px solid #333;
       transform: scale(1.1);
-    }
-
-    .selected .color-circle::after {
-      opacity: 1;
     }
 
     .color-name {
@@ -94,28 +73,33 @@
       color: #333;
     }
 
-    img {
-      max-width: 100%;
-      height: auto;
+    /* Video Container Fix */
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 450px; /* Fixed height to prevent collapsing */
       margin: 20px 0;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden; /* Ensures no overflow */
+      background: #000; /* Background to avoid flicker */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    @media (max-width: 768px) {
-      .configurator-container {
-        padding: 15px;
-      }
+    video {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
 
-      .color-circle {
-        width: 35px;
-        height: 35px;
-      }
-
-      .color-name {
-        font-size: 11px;
-      }
+    video.active {
+      opacity: 1;
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -124,7 +108,6 @@
 
   <div class="configurator-container">
 
-    <!-- Blades Color Selection -->
     <h3>Blades Color</h3>
     <div class="color-selection" id="bladesColors">
       <div class="color-option" data-color="Monument">
@@ -149,10 +132,9 @@
       </div>
     </div>
 
-    <!-- Product Image -->
-    <img id="productImage" src="" alt="Product Image">
+    <!-- Video Container -->
+    <div class="video-container" id="videoContainer"></div>
 
-    <!-- Frame Color Selection -->
     <h3>Frame Color</h3>
     <div class="color-selection" id="frameColors">
       <div class="color-option" data-color="Monument">
@@ -180,39 +162,54 @@
   </div>
 
   <script>
-    const productImage = document.getElementById('productImage');
-    let selectedFrameColor = 'Monument';
-    let selectedBladesColor = 'Monument';
+    const frameColors = ["Monument", "White", "Dune", "Silver", "Surfmist"];
+    const bladeColors = ["Monument", "White", "Dune", "Silver", "Surfmist"];
 
-    function updateImage() {
-      const baseURL = "https://raw.githubusercontent.com/bozzza/frame-blades-configurator/refs/heads/main";
-      const imagePath = `${baseURL}/F_${selectedFrameColor}_B_${selectedBladesColor}.jpg`;
-      productImage.src = imagePath;
-    }
+    const videoContainer = document.getElementById("videoContainer");
+    let selectedFrameColor = "Monument";
+    let selectedBladeColor = "Monument";
 
-    function handleColorClick(event, type) {
-      const selectedColor = event.currentTarget.getAttribute('data-color');
-      document.querySelectorAll(`.${type}-option`).forEach(option => option.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
+    // Generate all 25 video elements dynamically
+    const videos = {};
+    frameColors.forEach(frame => {
+      bladeColors.forEach(blade => {
+        const videoId = `F_${frame}_B_${blade}`;
+        const video = document.createElement("video");
+        video.id = videoId;
+        video.loop = true;
+        video.autoplay = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.innerHTML = `<source src="https://cdn.jsdelivr.net/gh/bozzza/frame-blades-configurator/${videoId}.mp4" type="video/mp4">`;
+        videos[videoId] = video;
+        videoContainer.appendChild(video);
+      });
+    });
 
-      if (type === 'frame') selectedFrameColor = selectedColor;
-      if (type === 'blades') selectedBladesColor = selectedColor;
-
-      updateImage();
+    function updateVideo() {
+      const videoId = `F_${selectedFrameColor}_B_${selectedBladeColor}`;
+      Object.values(videos).forEach(video => video.classList.remove("active"));
+      videos[videoId].classList.add("active");
     }
 
     document.querySelectorAll('#frameColors .color-option').forEach(option => {
-      option.classList.add('frame-option');
-      option.addEventListener('click', (event) => handleColorClick(event, 'frame'));
+      option.addEventListener('click', event => {
+        selectedFrameColor = event.currentTarget.getAttribute('data-color');
+        updateVideo();
+      });
     });
 
     document.querySelectorAll('#bladesColors .color-option').forEach(option => {
-      option.classList.add('blades-option');
-      option.addEventListener('click', (event) => handleColorClick(event, 'blades'));
+      option.addEventListener('click', event => {
+        selectedBladeColor = event.currentTarget.getAttribute('data-color');
+        updateVideo();
+      });
     });
 
-    updateImage();
+    // Initialize first video
+    updateVideo();
   </script>
+
 </body>
 
 </html>
